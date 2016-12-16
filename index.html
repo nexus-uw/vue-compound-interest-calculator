@@ -1,0 +1,60 @@
+<html>
+  <title>Compond Interest Calculator</title>
+<body>
+  <div id="app">
+    <h1>Compond Interest Calculator</h1>
+    <div>
+      <label for="originalPrincipal">Original Principal:</label> $
+      <input v-model="originalPrincipal" type="number" name="originalPrincipal" min="0">
+    </div>
+    <div>
+      <label for="nonminalAnnualInterestRate">Nonminal Annual Interest Rate:</label>
+      <input v-model="nonminalAnnualInterestRate" type="number" min="0">%
+    </div>
+    <div>
+      <label for="compondingFrequency">Componding Frequency:</label>
+      <input v-model="compondingFrequency" type="number" name="compondingFrequency" min="0"> times per year
+    </div>
+    <div>
+      <label for="lengthInterestIsApplied">Length Interest Is Applied:</label>
+      <input v-model="lengthInterestIsApplied" type="number" name="lengthInterestIsApplied" min="0"> years
+    </div>
+    <hr>
+    <div>
+      New Principal: $ {{newPrincipal}}
+    </div>
+    <div>
+      Interest Earned: $ {{earnedInterest}}
+    </div>
+    <footer style="padding-top: 25px">
+      <div>Built by <a href="https://ramsay.xyz">some smuch</a>  with <a href="https://vuejs.org">Vue.js</a></div>
+      <div>Learn more about compond interest at <a href="https://en.wikipedia.org/wiki/Compound_interest">Wikipedia</a></div>
+    </footer>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.1.6/vue.min.js" integrity="sha256-WcJDyxpvFLMHHA7kQuvbE5kWgRwV3zukWdjvbTUcXh8=" crossorigin="anonymous"></script>
+  <script>
+    var app = new Vue({
+      el: '#app',
+      data: {
+        originalPrincipal: null,
+        nonminalAnnualInterestRate: null,
+        compondingFrequency: null,
+        lengthInterestIsApplied: null,
+        newPrincipal: null,
+        earnedInterest: null,
+      },
+      computed: {
+        newPrincipal: function () {
+          const newPrincipal = this.originalPrincipal * Math.pow(1 + ((this.nonminalAnnualInterestRate / 100) / this.compondingFrequency), this.compondingFrequency * this.lengthInterestIsApplied);
+          return Math.round(newPrincipal * 100) / 100;
+        },
+        earnedInterest: function () {
+          return Math.round((this.newPrincipal - this.originalPrincipal) * 100) / 100;
+        }
+      },
+    })
+
+  </script>
+</body>
+
+</html>
