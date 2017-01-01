@@ -18,7 +18,7 @@
   <div id="app">
     <interest-calc v-bind:original-principal="originalPrincipal" v-bind:nonminal-annual-interest-rate="nonminalAnnualInterestRate"
       v-bind:componding-frequency="compondingFrequency" v-bind:length-interest-is-applied="lengthInterestIsApplied"></interest-calc>
-      <button v-on:click="reset()">reset form</button>
+    <button v-on:click="reset()">reset form</button>
     <hr>
     <h2>Examples</h2>
     <h3>click to load into the above form</h3>
@@ -36,41 +36,8 @@
     crossorigin="anonymous"></script>
   <script>
     const interestCalcComponent = ('interest-calc',{
-      template: `<div>
-      <h1>Compond Interest Calculator</h1>
-    <div>
-      <label for="originalPrincipal">Original Principal:</label> $
-      <input v-model="originalPrincipal" type="number" name="originalPrincipal" min="0">
-    </div>
-    <div>
-      <label for="nonminalAnnualInterestRate">Nonminal Annual Interest Rate:</label>
-      <input v-model="nonminalAnnualInterestRate" type="number" min="0">%
-    </div>
-    <div>
-      <label for="compondingFrequency">Componding Frequency:</label>
-      <input v-model="compondingFrequency" type="number" name="compondingFrequency" min="0"> times per year
-    </div>
-    <div>
-      <label for="lengthInterestIsApplied">Length Interest Is Applied:</label>
-      <input v-model="lengthInterestIsApplied" type="number" name="lengthInterestIsApplied" min="0"> years
-    </div>
-    <hr>
-    <div v-if="newPrincipal >= 0">
-      <div>
-        New Principal: $ {{newPrincipal}}
-      </div>
-      <div>
-        Interest Earned: $ {{earnedInterest}}
-      </div>
-    </div>
-    <div v-else>
-      all inputs are required and should be positive values
-    </div>
-    </div>
-
-      `,
+      template: '#interest-calc-template',
       data: {
-
         newPrincipal: null,
         earnedInterest: null,
       },
@@ -140,6 +107,39 @@
     })
 
   </script>
+  <script type="text/x-template" id="interest-calc-template">
+  <div>
+      <h1>Compond Interest Calculator</h1>
+    <div>
+      <label for="originalPrincipal">Original Principal:</label> $
+      <input v-model="originalPrincipal" type="number" name="originalPrincipal" min="0">
+    </div>
+    <div>
+      <label for="nonminalAnnualInterestRate">Nonminal Annual Interest Rate:</label>
+      <input v-model="nonminalAnnualInterestRate" type="number" min="0">%
+    </div>
+    <div>
+      <label for="compondingFrequency">Componding Frequency:</label>
+      <input v-model="compondingFrequency" type="number" name="compondingFrequency" min="0"> times per year
+    </div>
+    <div>
+      <label for="lengthInterestIsApplied">Length Interest Is Applied:</label>
+      <input v-model="lengthInterestIsApplied" type="number" name="lengthInterestIsApplied" min="0"> years
+    </div>
+    <hr>
+    <div v-if="newPrincipal >= 0">
+      <div>
+        New Principal: $ {{newPrincipal}}
+      </div>
+      <div>
+        Interest Earned: $ {{earnedInterest}}
+      </div>
+    </div>
+    <div v-else>
+      all inputs are required and should be positive values
+    </div>
+    </div>
+</script>
 </body>
 
 </html>
