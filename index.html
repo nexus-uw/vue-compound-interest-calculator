@@ -9,8 +9,35 @@
 </head>
 
 <body>
+  <noscript>
+    <h1>Hi there.</h1>
+    <br>
+    <h5>Since this page requires vue.js to run and there is no server-side to this app, Javascript is required for this page
+      to do anyting</h5>
+  </noscript>
   <div id="app">
-    <h1>Compond Interest Calculator</h1>
+    <interest-calc v-bind:original-principal="originalPrincipal" v-bind:nonminal-annual-interest-rate="nonminalAnnualInterestRate"
+      v-bind:componding-frequency="compondingFrequency" v-bind:length-interest-is-applied="lengthInterestIsApplied"></interest-calc>
+      <button v-on:click="reset()">reset form</button>
+    <hr>
+    <h2>Examples</h2>
+    <h3>click to load into the above form</h3>
+    <ul>
+      <li v-for="example in examples">
+        <button v-on:click="setCalcData(example.data)">{{example.description}}</button>
+      </li>
+    </ul>
+    <footer style="padding-top: 25px">
+      <div>Built by <a href="https://ramsay.xyz">some smuch</a> with <a href="https://vuejs.org">Vue.js</a></div>
+      <div>Learn more about compond interest at <a href="https://en.wikipedia.org/wiki/Compound_interest">Wikipedia</a></div>
+    </footer>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.1.6/vue.min.js" integrity="sha256-WcJDyxpvFLMHHA7kQuvbE5kWgRwV3zukWdjvbTUcXh8="
+    crossorigin="anonymous"></script>
+  <script>
+    const interestCalcComponent = ('interest-calc',{
+      template: `<div>
+      <h1>Compond Interest Calculator</h1>
     <div>
       <label for="originalPrincipal">Original Principal:</label> $
       <input v-model="originalPrincipal" type="number" name="originalPrincipal" min="0">
@@ -28,29 +55,30 @@
       <input v-model="lengthInterestIsApplied" type="number" name="lengthInterestIsApplied" min="0"> years
     </div>
     <hr>
-    <div>
-      New Principal: $ {{newPrincipal}}
+    <div v-if="newPrincipal >= 0">
+      <div>
+        New Principal: $ {{newPrincipal}}
+      </div>
+      <div>
+        Interest Earned: $ {{earnedInterest}}
+      </div>
     </div>
-    <div>
-      Interest Earned: $ {{earnedInterest}}
+    <div v-else>
+      all inputs are required and should be positive values
     </div>
-    <footer style="padding-top: 25px">
-      <div>Built by <a href="https://ramsay.xyz">some smuch</a> with <a href="https://vuejs.org">Vue.js</a></div>
-      <div>Learn more about compond interest at <a href="https://en.wikipedia.org/wiki/Compound_interest">Wikipedia</a></div>
-    </footer>
-  </div>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.1.6/vue.min.js" integrity="sha256-WcJDyxpvFLMHHA7kQuvbE5kWgRwV3zukWdjvbTUcXh8="
-    crossorigin="anonymous"></script>
-  <script>
-    var app = new Vue({
-      el: '#app',
+    </div>
+
+      `,
       data: {
-        originalPrincipal: null,
-        nonminalAnnualInterestRate: null,
-        compondingFrequency: null,
-        lengthInterestIsApplied: null,
+
         newPrincipal: null,
         earnedInterest: null,
+      },
+      props: {
+         originalPrincipal: Number,
+         nonminalAnnualInterestRate:Number,
+         compondingFrequency:Number,
+         lengthInterestIsApplied:Number
       },
       computed: {
         newPrincipal: function () {
@@ -61,6 +89,54 @@
           return Math.round((this.newPrincipal - this.originalPrincipal) * 100) / 100;
         }
       },
+    });
+
+    var app = new Vue({
+      el: '#app',
+      components : {
+        'interest-calc':interestCalcComponent
+      },
+      methods: {
+          setCalcData: function (data) {
+            this.originalPrincipal = data.originalPrincipal;
+            this.nonminalAnnualInterestRate = data.nonminalAnnualInterestRate;
+            this.compondingFrequency = data.compondingFrequency;
+            this.lengthInterestIsApplied = data.lengthInterestIsApplied;
+          },
+          reset: function(){
+            this.originalPrincipal =null;
+            this.nonminalAnnualInterestRate = null;
+            this.compondingFrequency = null;
+            this.lengthInterestIsApplied = null;
+          }
+      },
+      data: {
+        originalPrincipal: null,
+        nonminalAnnualInterestRate:null,
+        compondingFrequency:null,
+        lengthInterestIsApplied:null,
+        examples : [
+          {
+            description : '$1000 at 1% annually for 4 years',
+            data : {
+              originalPrincipal: 1000,
+              nonminalAnnualInterestRate:1,
+              compondingFrequency:1,
+              lengthInterestIsApplied:4
+            }
+          },
+           {
+            description : '$200 at 0.5% monthly for 5 years',
+            data : {
+              originalPrincipal: 200,
+              nonminalAnnualInterestRate:0.5,
+              compondingFrequency:12,
+              lengthInterestIsApplied:5
+            }
+          }
+        ]
+      }
+
     })
 
   </script>
